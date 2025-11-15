@@ -1,0 +1,7 @@
+{
+  "name": "Cinewave",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
