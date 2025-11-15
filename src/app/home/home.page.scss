@@ -1,27 +1,480 @@
-#container {
-  text-align: center;
+// CineWave Mobile Design - Preto e Roxo
+.cinewave-header {
+  --background: #000000;
+  position: relative;
+  z-index: 1000;
+  
+  ion-header {
+    position: relative;
+  }
+  
+  .custom-toolbar {
+    --background: linear-gradient(135deg, #1a0a2e 0%, #8a2be2 100%);
+    --color: #ffffff;
+    --border-width: 0;
+    padding-top: var(--safe-area-inset-top);
+    min-height: calc(56px + var(--safe-area-inset-top));
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+  }
 
+  .logo-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 8px rgba(138, 43, 226, 0.6);
+  }
+
+  .nav-button {
+    --color: #ffffff;
+    margin-right: 8px;
+    
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+}
+
+.cinewave-content {
+  --background: linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 100%);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  overflow-y: auto;
+}
+
+// Hero Section (Filme em Destaque)
+.hero-section {
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    height: 50vh;
+    min-height: 350px;
+  }
+}
+
+.hero-backdrop {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.hero-overlay {
   position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.hero-content {
+  width: 100%;
+  max-width: 600px;
+  z-index: 2;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
 
-  color: #8c8c8c;
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+}
 
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.play-button {
+  --background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+  --color: #ffffff;
+  --border-radius: 8px;
+  font-weight: 700;
+  text-transform: none;
+  min-height: 44px;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+  
+  &::part(native) {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4) !important;
+  }
+  
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.info-button {
+  --color: #ffffff;
+  --background: rgba(138, 43, 226, 0.7);
+  --border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  --box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+  
+  &::part(native) {
+    border-radius: 50% !important;
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3) !important;
+  }
+  
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+.hero-description {
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
 }
 
-#container a {
-  text-decoration: none;
+// Search Container no Header
+.search-container-header {
+  padding: 0.75rem 1rem 1rem;
+  background: rgba(10, 10, 10, 0.95);
+  position: relative;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(138, 43, 226, 0.3);
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-bottom: 0;
+}
+
+.searchbar {
+  --background: rgba(138, 43, 226, 0.2);
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+  --placeholder-color: rgba(255, 255, 255, 0.7);
+  --color: #ffffff;
+  --icon-color: #8a2be2;
+  min-height: 48px;
+  width: 100%;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 0;
+  position: relative;
+  z-index: 10;
+}
+
+ion-searchbar.searchbar {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  
+  &::part(native) {
+    border: 2px solid rgba(138, 43, 226, 0.5) !important;
+    border-radius: 12px !important;
+    background: rgba(138, 43, 226, 0.2) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  &::part(container) {
+    border: 2px solid rgba(138, 43, 226, 0.5) !important;
+    border-radius: 12px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  &::part(input) {
+    color: #ffffff !important;
+  }
+}
+
+// Section Container
+.section-container {
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  padding: 0;
+  text-transform: none;
+  letter-spacing: 0;
+  text-shadow: 0 2px 8px rgba(138, 43, 226, 0.5);
+
+  @media (min-width: 768px) {
+    font-size: 1.4rem;
+  }
+}
+
+// Horizontal Scroll
+.horizontal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/Edge
+  
+  &::-webkit-scrollbar {
+    display: none; // Chrome/Safari
+  }
+  
+  padding-bottom: 0.5rem;
+}
+
+.movie-row {
+  display: flex;
+  gap: 0.5rem;
+  padding-right: 1rem;
+  min-width: min-content;
+}
+
+// Movie Card Horizontal (Netflix Style)
+.movie-card-horizontal {
+  flex: 0 0 auto;
+  width: 140px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (min-width: 768px) {
+    width: 180px;
+    
+    &:hover {
+      transform: scale(1.05);
+      z-index: 10;
+    }
+  }
+}
+
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 150%; // Aspect ratio 2:3
+  overflow: hidden;
+  border-radius: 8px;
+  background: #1a1a1a;
+  border: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+}
+
+.movie-card-horizontal:active .card-overlay,
+.movie-card-horizontal:hover .card-overlay {
+  opacity: 1;
+}
+
+.play-icon {
+  font-size: 48px;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+}
+
+.favorite-badge-small {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  background: rgba(138, 43, 226, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+  border-radius: 50% !important;
+
+  &:active {
+    transform: scale(0.9);
+    background: rgba(138, 43, 226, 1);
+  }
+
+  .favorite-icon {
+    color: #ffffff;
+    font-size: 18px;
+  }
+
+  .favorite-icon-filled {
+    color: #ff1744;
+    font-size: 18px;
+  }
+}
+
+// Search Results Grid
+.search-results {
+  padding: 1.5rem 1rem;
+  margin-top: 0;
+  padding-top: 2rem;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.movie-card-search {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.search-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #1a1a1a;
+  border: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.search-movie-info {
+  padding: 0.5rem 0;
+  
+  h3 {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .search-rating {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+}
+
+// Loading
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  gap: 1rem;
+  
+  p {
+    color: #8a2be2;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+// No Results
+.no-results {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2rem;
+  
+  p {
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+// Remove padding padrão do ion-content
+ion-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
 }

@@ -1,20 +1,335 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
+<ion-header class="cinewave-header">
+  <ion-toolbar color="dark" class="custom-toolbar">
+    <ion-title class="logo-title">
+      <strong>CineWave</strong>
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToFavorites()" fill="clear" class="nav-button">
+        <ion-icon name="heart" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  <!-- Barra de busca no header -->
+  <div class="search-container-header">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      placeholder="Buscar filmes..."
+      debounce="500"
+      class="searchbar"
+    ></ion-searchbar>
+  </div>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="cinewave-content">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <!-- Hero Section - Filme em Destaque -->
+  @if (!loading && featuredMovies.length > 0 && !searchQuery) {
+    <div class="hero-section" (click)="goToMovieDetails(featuredMovies[0].id)">
+      <div 
+        class="hero-backdrop" 
+        [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + featuredMovies[0].backdrop_path + ')'"
+      >
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <h1 class="hero-title">{{ featuredMovies[0].title }}</h1>
+            <div class="hero-actions">
+              <ion-button fill="solid" color="primary" class="play-button">
+                <ion-icon name="caret-forward" slot="start"></ion-icon>
+                Assistir
+              </ion-button>
+              <ion-button fill="clear" class="info-button" (click)="goToMovieDetails(featuredMovies[0].id); $event.stopPropagation()">
+                <ion-icon name="information-circle" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+            <p class="hero-description">{{ featuredMovies[0].overview | truncate:150 }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (loading && movies.length === 0) {
+    <div class="loading-container">
+      <ion-spinner color="primary"></ion-spinner>
+      <p>Carregando filmes...</p>
+    </div>
+  }
+
+  <!-- Seções de Filmes (estilo Netflix) -->
+  @if (!searchQuery) {
+    <!-- Continue Watching -->
+    @if (continueWatching.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Continuar Assistindo</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of continueWatching; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Em Alta -->
+    @if (trendingMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Em Alta</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of trendingMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Populares -->
+    @if (movies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Populares no CineWave</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of movies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                  <div class="favorite-badge-small" (click)="toggleFavorite(movie, $event)">
+                    @if (isFavorite(movie.id)) {
+                      <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+                    } @else {
+                      <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Mais Bem Avaliados -->
+    @if (topRatedMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Mais Bem Avaliados</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of topRatedMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Filmes de Ação -->
+    @if (actionMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Ação</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of actionMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                  <div class="favorite-badge-small" (click)="toggleFavorite(movie, $event)">
+                    @if (isFavorite(movie.id)) {
+                      <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+                    } @else {
+                      <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Filmes de Comédia -->
+    @if (comedyMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Comédia</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of comedyMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                  <div class="favorite-badge-small" (click)="toggleFavorite(movie, $event)">
+                    @if (isFavorite(movie.id)) {
+                      <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+                    } @else {
+                      <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Filmes de Drama -->
+    @if (dramaMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Drama</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of dramaMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                  <div class="favorite-badge-small" (click)="toggleFavorite(movie, $event)">
+                    @if (isFavorite(movie.id)) {
+                      <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+                    } @else {
+                      <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Filmes de Terror -->
+    @if (horrorMovies.length > 0) {
+      <div class="section-container">
+        <h2 class="section-title">Terror</h2>
+        <div class="horizontal-scroll">
+          <div class="movie-row">
+            @for (movie of horrorMovies; track movie.id) {
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+                <div class="card-image-wrapper">
+                  <img 
+                    [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                    [alt]="movie.title"
+                    class="card-image"
+                    (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+                  />
+                  <div class="card-overlay">
+                    <ion-icon name="play-circle" class="play-icon"></ion-icon>
+                  </div>
+                  <div class="favorite-badge-small" (click)="toggleFavorite(movie, $event)">
+                    @if (isFavorite(movie.id)) {
+                      <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+                    } @else {
+                      <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Resultados da Busca -->
+  @if (searchQuery && movies.length > 0) {
+    <div class="search-results">
+      <h2 class="section-title">Resultados da Busca</h2>
+      <div class="movies-grid">
+        @for (movie of movies; track movie.id) {
+          <div class="movie-card-search" (click)="goToMovieDetails(movie.id)">
+            <img 
+              [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+              [alt]="movie.title"
+              class="search-poster"
+              (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+            />
+            <div class="search-movie-info">
+              <h3>{{ movie.title }}</h3>
+              <p class="search-rating">⭐ {{ movie.vote_average | number:'1.1-1' }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Mensagem quando não há resultados -->
+  @if (!loading && movies.length === 0 && searchQuery) {
+    <div class="no-results">
+      <p>Nenhum filme encontrado para "{{ searchQuery }}"</p>
+    </div>
+  }
 </ion-content>

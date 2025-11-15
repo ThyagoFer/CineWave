@@ -1,0 +1,113 @@
+<ion-header [translucent]="true" class="cinewave-header">
+  <ion-toolbar color="dark" class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalhes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFavorite()" fill="clear" class="favorite-header-btn">
+        @if (isFavorite()) {
+          <ion-icon name="heart" class="favorite-icon-filled"></ion-icon>
+        } @else {
+          <ion-icon name="heart-outline" class="favorite-icon"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="cinewave-content">
+  @if (loading) {
+    <div class="loading-container">
+      <ion-spinner color="primary"></ion-spinner>
+      <p>Carregando...</p>
+    </div>
+  }
+
+  @if (movie && !loading) {
+    <div class="movie-details-container">
+      <!-- Hero Section com backdrop -->
+      <div class="hero-section" [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'">
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <img 
+              [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+              [alt]="movie.title"
+              class="poster-image"
+              (error)="$event.target.src='https://via.placeholder.com/500x750?text=Sem+Imagem'"
+            />
+            <div class="hero-info">
+              <h1>{{ movie.title }}</h1>
+              <div class="movie-meta">
+                <span class="rating">
+                  ⭐ {{ movie.vote_average | number:'1.1-1' }}
+                </span>
+                <span class="release-date">
+                  📅 {{ movie.release_date | date:'dd/MM/yyyy' }}
+                </span>
+                @if (movie.runtime) {
+                  <span class="runtime">
+                    ⏱️ {{ movie.runtime }} min
+                  </span>
+                }
+              </div>
+              <div class="hero-actions">
+                <ion-button fill="solid" color="primary" class="play-button">
+                  <ion-icon name="caret-forward" slot="start"></ion-icon>
+                  Assistir
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdo -->
+      <div class="content-section">
+        <!-- Sinopse -->
+        <div class="info-card">
+          <h2 class="card-title">Sinopse</h2>
+          <p class="card-text">{{ movie.overview }}</p>
+        </div>
+
+        <!-- Gêneros -->
+        @if (movie.genres && movie.genres.length > 0) {
+          <div class="info-card">
+            <h2 class="card-title">Gêneros</h2>
+            <div class="genres-container">
+              @for (genre of movie.genres; track genre.id) {
+                <span class="genre-chip">{{ genre.name }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Elenco -->
+        @if (movie.cast && movie.cast.length > 0) {
+          <div class="info-card">
+            <h2 class="card-title">Elenco Principal</h2>
+            <div class="cast-container">
+              @for (actor of movie.cast; track actor.id) {
+                <div class="cast-item">
+                  <div class="cast-avatar">
+                    @if (actor.profile_path) {
+                      <img [src]="'https://image.tmdb.org/t/p/w200' + actor.profile_path" [alt]="actor.name" />
+                    } @else {
+                      <div class="avatar-placeholder">
+                        <ion-icon name="person"></ion-icon>
+                      </div>
+                    }
+                  </div>
+                  <div class="cast-info">
+                    <h3>{{ actor.name }}</h3>
+                    <p>{{ actor.character }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</ion-content>
