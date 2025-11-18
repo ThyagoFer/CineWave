@@ -34,11 +34,11 @@
           <div class="hero-content">
             <h1 class="hero-title">{{ featuredMovies[0].title }}</h1>
             <div class="hero-actions">
-              <ion-button fill="solid" color="primary" class="play-button">
+              <ion-button fill="solid" color="primary" class="play-button" appHighlight="#ff6b6b">
                 <ion-icon name="caret-forward" slot="start"></ion-icon>
                 Assistir
               </ion-button>
-              <ion-button fill="clear" class="info-button" (click)="goToMovieDetails(featuredMovies[0].id); $event.stopPropagation()">
+              <ion-button fill="clear" class="info-button" (click)="goToMovieDetails(featuredMovies[0].id); $event.stopPropagation()" appHighlight="#4ecdc4">
                 <ion-icon name="information-circle" slot="icon-only"></ion-icon>
               </ion-button>
             </div>
@@ -66,7 +66,7 @@
         <div class="horizontal-scroll">
           <div class="movie-row">
             @for (movie of continueWatching; track movie.id) {
-              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)">
+              <div class="movie-card-horizontal" (click)="goToMovieDetails(movie.id)" appHighlight="#ffd700">
                 <div class="card-image-wrapper">
                   <img 
                     [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 

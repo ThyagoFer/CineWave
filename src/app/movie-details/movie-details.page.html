@@ -52,7 +52,7 @@
                 }
               </div>
               <div class="hero-actions">
-                <ion-button fill="solid" color="primary" class="play-button">
+                <ion-button fill="solid" color="primary" class="play-button" appHighlight="#ff6b6b">
                   <ion-icon name="caret-forward" slot="start"></ion-icon>
                   Assistir
                 </ion-button>
@@ -76,7 +76,7 @@
             <h2 class="card-title">Gêneros</h2>
             <div class="genres-container">
               @for (genre of movie.genres; track genre.id) {
-                <span class="genre-chip">{{ genre.name }}</span>
+                <span class="genre-chip" appHighlight="#4ecdc4">{{ genre.name }}</span>
               }
             </div>
           </div>

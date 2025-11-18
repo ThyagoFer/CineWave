@@ -16,7 +16,7 @@
         <div class="empty-icon">❤️</div>
         <h2>Nenhum filme favoritado ainda</h2>
         <p>Adicione filmes aos favoritos para vê-los aqui!</p>
-        <ion-button color="primary" (click)="goToHome()" class="explore-button">
+        <ion-button color="primary" (click)="goToHome()" class="explore-button" appHighlight="#ff6b6b">
           Explorar Filmes
         </ion-button>
       </div>
@@ -30,7 +30,7 @@
       <!-- Grid de Favoritos -->
       <div class="favorites-grid">
         @for (movie of favorites; track movie.id) {
-          <div class="favorite-card" (click)="goToMovieDetails(movie.id)">
+          <div class="favorite-card" (click)="goToMovieDetails(movie.id)" appHighlight="#ffd700">
             <div class="card-image-wrapper">
               <img
                 class="movie-poster"
