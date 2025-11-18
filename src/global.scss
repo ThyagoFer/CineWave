@@ -35,3 +35,74 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Custom CineWave Theme - Preto e Roxo */
+:root {
+  --ion-background-color: #0a0a0a;
+  --ion-text-color: #ffffff;
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+  --safe-area-inset-right: env(safe-area-inset-right);
+}
+
+/* Safe area para iOS */
+body {
+  padding-top: var(--safe-area-inset-top);
+  padding-bottom: var(--safe-area-inset-bottom);
+  padding-left: var(--safe-area-inset-left);
+  padding-right: var(--safe-area-inset-right);
+}
+
+.custom-toolbar {
+  --background: linear-gradient(135deg, #1a0a2e 0%, #8a2be2 100%);
+  --color: #ffffff;
+  box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+  padding-top: var(--safe-area-inset-top);
+  min-height: calc(56px + var(--safe-area-inset-top));
+}
+
+ion-content {
+  --background: linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 100%);
+  --padding-top: var(--safe-area-inset-top);
+  --padding-bottom: var(--safe-area-inset-bottom);
+  --padding-start: var(--safe-area-inset-left);
+  --padding-end: var(--safe-area-inset-right);
+}
+
+ion-button {
+  --background: linear-gradient(135deg, #8a2be2 0%, #6a1bb2 100%);
+  --color: #ffffff;
+  --border-radius: 12px;
+  font-weight: 600;
+  --box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+  min-height: 44px; /* Tamanho mínimo para touch */
+  --padding-start: 16px;
+  --padding-end: 16px;
+  
+  &::part(native) {
+    border-radius: var(--border-radius, 12px) !important;
+    box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4) !important;
+  }
+  
+  &:hover {
+    --background: linear-gradient(135deg, #9a3bf2 0%, #7a2bc2 100%);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+  }
+}
+
+/* Melhorias para touch */
+* {
+  -webkit-tap-highlight-color: rgba(138, 43, 226, 0.3);
+  touch-action: manipulation;
+}
+
+/* Scroll suave para mobile */
+html {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
