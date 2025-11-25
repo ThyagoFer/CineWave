@@ -26,7 +26,6 @@
 
   @if (movie && !loading) {
     <div class="movie-details-container">
-      <!-- Hero Section com backdrop -->
       <div class="hero-section" [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'">
         <div class="hero-overlay">
           <div class="hero-content">
@@ -53,7 +52,7 @@
               </div>
               <div class="hero-actions">
                 <ion-button fill="solid" color="primary" class="play-button" appHighlight="#ff6b6b">
-                  <ion-icon name="caret-forward" slot="start"></ion-icon>
+                  <ion-icon name="play" slot="start"></ion-icon>
                   Assistir
                 </ion-button>
               </div>
@@ -62,15 +61,12 @@
         </div>
       </div>
 
-      <!-- Conteúdo -->
       <div class="content-section">
-        <!-- Sinopse -->
         <div class="info-card">
           <h2 class="card-title">Sinopse</h2>
           <p class="card-text">{{ movie.overview }}</p>
         </div>
 
-        <!-- Gêneros -->
         @if (movie.genres && movie.genres.length > 0) {
           <div class="info-card">
             <h2 class="card-title">Gêneros</h2>
@@ -82,7 +78,6 @@
           </div>
         }
 
-        <!-- Elenco -->
         @if (movie.cast && movie.cast.length > 0) {
           <div class="info-card">
             <h2 class="card-title">Elenco Principal</h2>

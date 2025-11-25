@@ -27,7 +27,6 @@
         <h2 class="section-title">Meus Favoritos ({{ favorites.length }})</h2>
       </div>
 
-      <!-- Grid de Favoritos -->
       <div class="favorites-grid">
         @for (movie of favorites; track movie.id) {
           <div class="favorite-card" (click)="goToMovieDetails(movie.id)" appHighlight="#ffd700">

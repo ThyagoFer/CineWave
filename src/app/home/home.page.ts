@@ -8,27 +8,17 @@ import {
   IonTitle,
   IonContent,
   IonSearchbar,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonImg,
   IonButton,
   IonButtons,
   IonSpinner,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
   IonIcon
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, caretForward, informationCircle, playCircle } from 'ionicons/icons';
+import { heart, heartOutline, play, informationCircle, playCircle, personCircle } from 'ionicons/icons';
 import { MovieService, Movie } from '../services/movie.service';
 import { FavoritesService } from '../services/favorites.service';
+import { AuthService } from '../services/auth.service';
 import { TruncatePipe } from '../pipes/truncate.pipe';
-import { DatePipe } from '@angular/common';
 import { HighlightDirective } from '../directives/highlight.directive';
 
 @Component({
@@ -43,23 +33,12 @@ import { HighlightDirective } from '../directives/highlight.directive';
     IonTitle,
     IonContent,
     IonSearchbar,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonImg,
     IonButton,
     IonSpinner,
-    IonGrid,
-    IonRow,
-    IonCol,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
-  IonIcon,
-  IonButtons,
-  TruncatePipe,
-  DatePipe,
-  HighlightDirective
+    IonIcon,
+    IonButtons,
+    TruncatePipe,
+    HighlightDirective
   ],
 })
 export class HomePage implements OnInit {
@@ -81,9 +60,10 @@ export class HomePage implements OnInit {
   constructor(
     private movieService: MovieService,
     private router: Router,
-    public favoritesService: FavoritesService
+    public favoritesService: FavoritesService,
+    public authService: AuthService
   ) {
-    addIcons({ heart, heartOutline, caretForward, informationCircle, playCircle });
+    addIcons({ heart, heartOutline, play, informationCircle, playCircle, personCircle });
   }
 
   ngOnInit() {
@@ -100,7 +80,6 @@ export class HomePage implements OnInit {
       next: (response) => {
         if (this.currentPage === 1) {
           this.movies = response.results;
-          // Primeiros 5 filmes para o carrossel
           this.featuredMovies = response.results.slice(0, 5);
         } else {
           this.movies = [...this.movies, ...response.results];
@@ -137,9 +116,7 @@ export class HomePage implements OnInit {
     }
   }
 
-
   goToMovieDetails(movieId: number) {
-    // Passando parâmetro por rota (PONTO EXTRA)
     this.router.navigate(['/movie-details', movieId]);
   }
 
@@ -154,6 +131,14 @@ export class HomePage implements OnInit {
 
   goToFavorites() {
     this.router.navigate(['/favorites']);
+  }
+
+  goToProfile() {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   loadMore(event: any) {
@@ -200,14 +185,12 @@ export class HomePage implements OnInit {
   }
 
   loadContinueWatching() {
-    // Usa os favoritos como "Continue Watching"
     this.favoritesService.favorites$.subscribe(favorites => {
       this.continueWatching = favorites.slice(0, 10);
     });
   }
 
   loadMoviesByGenres() {
-    // Ação (28)
     this.movieService.getMoviesByGenre(28, 1).subscribe({
       next: (response) => {
         this.actionMovies = response.results.slice(0, 10);
@@ -217,7 +200,6 @@ export class HomePage implements OnInit {
       }
     });
 
-    // Comédia (35)
     this.movieService.getMoviesByGenre(35, 1).subscribe({
       next: (response) => {
         this.comedyMovies = response.results.slice(0, 10);
@@ -227,7 +209,6 @@ export class HomePage implements OnInit {
       }
     });
 
-    // Drama (18)
     this.movieService.getMoviesByGenre(18, 1).subscribe({
       next: (response) => {
         this.dramaMovies = response.results.slice(0, 10);
@@ -237,7 +218,6 @@ export class HomePage implements OnInit {
       }
     });
 
-    // Terror (27)
     this.movieService.getMoviesByGenre(27, 1).subscribe({
       next: (response) => {
         this.horrorMovies = response.results.slice(0, 10);

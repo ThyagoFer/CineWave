@@ -11,9 +11,3 @@ export class TruncatePipe implements PipeTransform {
   }
 }
 
-
-
-
-
-
-

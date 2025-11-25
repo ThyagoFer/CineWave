@@ -1,0 +1,195 @@
+<ion-header class="cinewave-header">
+  <ion-toolbar color="dark" class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToHome()" fill="clear" class="nav-button">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Meu Perfil</ion-title>
+    <ion-buttons slot="end">
+      @if (!isEditing) {
+        <ion-button (click)="startEditing()" fill="clear" class="nav-button">
+          <ion-icon name="create" slot="icon-only"></ion-icon>
+        </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile-content">
+  @if (user) {
+    <div class="profile-container">
+      <div class="avatar-section">
+        <div class="avatar-wrapper" [class.editing]="isEditing" (click)="isEditing && toggleAvatarSelector()">
+          <img [src]="getCurrentAvatar()" alt="Avatar" class="avatar-image" />
+          @if (isEditing) {
+            <div class="avatar-overlay">
+              <ion-icon name="camera"></ion-icon>
+            </div>
+          }
+        </div>
+        
+        @if (!isEditing) {
+          <h1 class="user-name">{{ user.name }}</h1>
+          <p class="user-email">{{ user.email }}</p>
+        }
+      </div>
+
+      @if (showAvatarSelector && isEditing) {
+        <div class="avatar-selector">
+          <h3>Escolha seu avatar</h3>
+          <div class="avatar-grid">
+            @for (avatar of avatarOptions; track avatar) {
+              <div 
+                class="avatar-option" 
+                [class.selected]="editAvatar === avatar"
+                (click)="selectAvatar(avatar)"
+              >
+                <img [src]="avatar" alt="Avatar option" />
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="message success-message">
+          {{ successMessage }}
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="message error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <div class="profile-info">
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="person"></ion-icon>
+            <span>Nome</span>
+          </div>
+          @if (isEditing) {
+            <ion-input
+              type="text"
+              [(ngModel)]="editName"
+              placeholder="Seu nome"
+              class="edit-input"
+            ></ion-input>
+          } @else {
+            <p class="info-value">{{ user.name }}</p>
+          }
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="mail"></ion-icon>
+            <span>E-mail</span>
+          </div>
+          <p class="info-value">{{ user.email }}</p>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="call"></ion-icon>
+            <span>Telefone</span>
+          </div>
+          @if (isEditing) {
+            <ion-input
+              type="tel"
+              [(ngModel)]="editPhone"
+              placeholder="(00) 00000-0000"
+              class="edit-input"
+            ></ion-input>
+          } @else {
+            <p class="info-value">{{ user.phone || 'Não informado' }}</p>
+          }
+        </div>
+
+        <div class="info-item bio-item">
+          <div class="info-label">
+            <ion-icon name="create"></ion-icon>
+            <span>Sobre mim</span>
+          </div>
+          @if (isEditing) {
+            <ion-textarea
+              [(ngModel)]="editBio"
+              placeholder="Conte um pouco sobre você..."
+              class="edit-textarea"
+              [autoGrow]="true"
+              rows="3"
+            ></ion-textarea>
+          } @else {
+            <p class="info-value bio-text">{{ user.bio || 'Nenhuma descrição ainda' }}</p>
+          }
+        </div>
+
+        <div class="info-item favorites-item" (click)="goToFavorites()">
+          <div class="info-label">
+            <ion-icon name="heart"></ion-icon>
+            <span>Meus Favoritos</span>
+          </div>
+          <div class="favorites-info">
+            <p class="info-value">{{ favoritesCount }} {{ favoritesCount === 1 ? 'filme' : 'filmes' }}</p>
+            <ion-icon name="arrow-back" class="arrow-icon"></ion-icon>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="person"></ion-icon>
+            <span>Membro desde</span>
+          </div>
+          <p class="info-value">{{ formatDate(user.createdAt) }}</p>
+        </div>
+      </div>
+
+      @if (isEditing) {
+        <div class="action-buttons">
+          <ion-button 
+            expand="block" 
+            class="save-button"
+            (click)="saveChanges()"
+            [disabled]="loading"
+          >
+            @if (loading) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              <ion-icon name="checkmark" slot="start"></ion-icon>
+              Salvar Alterações
+            }
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            fill="outline"
+            class="cancel-button"
+            (click)="cancelEditing()"
+            [disabled]="loading"
+          >
+            <ion-icon name="close" slot="start"></ion-icon>
+            Cancelar
+          </ion-button>
+        </div>
+      } @else {
+        <div class="action-buttons">
+          <ion-button 
+            expand="block" 
+            color="danger"
+            class="logout-button"
+            (click)="logout()"
+          >
+            <ion-icon name="log-out" slot="start"></ion-icon>
+            Sair da Conta
+          </ion-button>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="loading-container">
+      <ion-spinner color="primary"></ion-spinner>
+      <p>Carregando perfil...</p>
+    </div>
+  }
+</ion-content>

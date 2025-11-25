@@ -9,25 +9,15 @@ import {
   IonBackButton, 
   IonButtons,
   IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonImg,
-  IonChip,
-  IonLabel,
-  IonItem,
-  IonAvatar,
   IonSpinner,
   IonIcon
 } from '@ionic/angular/standalone';
 import { MovieService, MovieDetails, Movie } from '../services/movie.service';
 import { FavoritesService } from '../services/favorites.service';
-import { TruncatePipe } from '../pipes/truncate.pipe';
 import { DatePipe } from '@angular/common';
 import { HighlightDirective } from '../directives/highlight.directive';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, caretForward, person } from 'ionicons/icons';
+import { heart, heartOutline, play, person } from 'ionicons/icons';
 
 @Component({
   selector: 'app-movie-details',
@@ -41,21 +31,11 @@ import { heart, heartOutline, caretForward, person } from 'ionicons/icons';
     IonContent,
     IonBackButton,
     IonButtons,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonImg,
-    IonChip,
-    IonLabel,
-    IonItem,
-  IonAvatar,
-  IonSpinner,
-  IonIcon,
-  IonButton,
-  TruncatePipe,
-  DatePipe,
-  HighlightDirective
+    IonSpinner,
+    IonIcon,
+    IonButton,
+    DatePipe,
+    HighlightDirective
   ]
 })
 export class MovieDetailsPage implements OnInit {
@@ -69,11 +49,10 @@ export class MovieDetailsPage implements OnInit {
     private router: Router,
     private favoritesService: FavoritesService
   ) {
-    addIcons({ heart, heartOutline, caretForward, person });
+    addIcons({ heart, heartOutline, play, person });
   }
 
   ngOnInit() {
-    // Recebendo parâmetro da rota (PONTO EXTRA)
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -121,5 +100,3 @@ export class MovieDetailsPage implements OnInit {
     return this.movie ? this.favoritesService.isFavorite(this.movie.id) : false;
   }
 }
-
-

@@ -19,9 +19,3 @@ export class HighlightDirective {
   }
 }
 
-
-
-
-
-
-

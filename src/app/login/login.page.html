@@ -1,0 +1,125 @@
+<ion-content class="login-content">
+  <div class="login-container">
+    <div class="login-header">
+      <div class="logo-container">
+        <ion-icon name="film" class="logo-icon"></ion-icon>
+        <h1 class="logo-text">CineWave</h1>
+      </div>
+      <p class="tagline">Seu cinema favorito em qualquer lugar</p>
+    </div>
+
+    <div class="form-container">
+      <h2 class="form-title">{{ isLoginMode ? 'Entrar' : 'Criar Conta' }}</h2>
+
+      @if (!isLoginMode) {
+        <div class="input-group">
+          <ion-icon name="person" class="input-icon"></ion-icon>
+          <ion-input
+            type="text"
+            [(ngModel)]="name"
+            placeholder="Nome completo"
+            class="custom-input"
+            [clearInput]="true"
+          ></ion-input>
+        </div>
+      }
+
+      <div class="input-group">
+        <ion-icon name="mail" class="input-icon"></ion-icon>
+        <ion-input
+          type="email"
+          [(ngModel)]="email"
+          placeholder="E-mail"
+          class="custom-input"
+          [clearInput]="true"
+          autocomplete="email"
+        ></ion-input>
+      </div>
+
+      <div class="input-group">
+        <ion-icon name="lock-closed" class="input-icon"></ion-icon>
+        <ion-input
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="password"
+          placeholder="Senha"
+          class="custom-input password-input"
+        ></ion-input>
+        <ion-icon 
+          [name]="showPassword ? 'eye-off' : 'eye'" 
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+        ></ion-icon>
+      </div>
+
+      @if (!isLoginMode) {
+        <div class="input-group">
+          <ion-icon name="lock-closed" class="input-icon"></ion-icon>
+          <ion-input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirmar senha"
+            class="custom-input password-input"
+          ></ion-input>
+          <ion-icon 
+            [name]="showConfirmPassword ? 'eye-off' : 'eye'" 
+            class="toggle-password"
+            (click)="toggleConfirmPasswordVisibility()"
+          ></ion-icon>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="message error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="message success-message">
+          {{ successMessage }}
+        </div>
+      }
+
+      <ion-button 
+        expand="block" 
+        class="submit-button"
+        (click)="onSubmit()"
+        [disabled]="loading"
+      >
+        @if (loading) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          {{ isLoginMode ? 'Entrar' : 'Criar Conta' }}
+        }
+      </ion-button>
+
+      <div class="toggle-mode">
+        <span class="toggle-text">
+          {{ isLoginMode ? 'Não tem uma conta?' : 'Já tem uma conta?' }}
+        </span>
+        <span class="toggle-link" (click)="toggleMode()">
+          {{ isLoginMode ? 'Criar conta' : 'Entrar' }}
+        </span>
+      </div>
+
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-text">ou</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <ion-button 
+        expand="block" 
+        fill="outline"
+        class="guest-button"
+        (click)="continueAsGuest()"
+      >
+        Continuar como convidado
+      </ion-button>
+    </div>
+
+    <div class="login-footer">
+      <p>Ao continuar, você concorda com nossos Termos de Uso</p>
+    </div>
+  </div>
+</ion-content>
